@@ -1,0 +1,188 @@
+Option Explicit
+
+Sub ExportScheduleToHTML()
+
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Sheets(1)
+
+    Dim lastRow As Long
+    lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+
+    Dim html As String
+    Dim i As Long
+
+    ' HTMLヘッダ
+    html = "<!DOCTYPE html>" & vbCrLf
+    html = html & "<html lang='ja'>" & vbCrLf
+    html = html & "<head>" & vbCrLf
+    html = html & "<meta charset='UTF-8'>" & vbCrLf
+    html = html & "<title>スケジュール</title>" & vbCrLf
+    html = html & "<link rel='stylesheet' href='style.css'>" & vbCrLf
+    html = html & "</head>" & vbCrLf
+    html = html & "<body>" & vbCrLf
+    
+    ' サイドバー開始
+    html = html & "<div class='sidebar'>" & vbCrLf
+
+    ' フィルターUI
+    html = html & "<div class='filters'>" & vbCrLf
+    html = html & CreateFilterUI(ws)
+    html = html & "</div>" & vbCrLf
+    
+    ' サイドバー終了
+    html = html & "</div>" & vbCrLf
+
+    ' メイン開始
+    html = html & "<div class='main'>" & vbCrLf
+    
+    ' カレンダー本体
+    html = html & "<div id='calendar'></div>" & vbCrLf
+    
+    ' サイドバー終了
+    html = html & "</div>" & vbCrLf
+
+    ' データ埋め込み
+    html = html & "<script>" & vbCrLf
+    html = html & "const tasks = [" & vbCrLf
+
+    For i = 2 To lastRow
+
+        ' フィルターで非表示は除外
+        If ws.Rows(i).Hidden = False Then
+
+            html = html & "{" & _
+                "id:""" & ws.Cells(i, 1).Value & """," & _
+                "site:""" & ws.Cells(i, 2).Value & """," & _
+                "city:""" & ws.Cells(i, 3).Value & """," & _
+                "type:""" & ws.Cells(i, 4).Value & """," & _
+                "owner:""" & ws.Cells(i, 5).Value & """," & _
+                "start:""" & Format(ws.Cells(i, 6).Value, "yyyy-mm-dd") & """," & _
+                "end:""" & Format(ws.Cells(i, 7).Value, "yyyy-mm-dd") & """" & _
+            "}," & vbCrLf
+
+        End If
+    Next i
+
+    html = html & "];" & vbCrLf
+    html = html & "</script>" & vbCrLf
+
+    ' JS読み込み
+    html = html & "<script src='script.js'></script>" & vbCrLf
+
+    html = html & "</body></html>"
+
+    ' ファイル出力
+    Dim path As String
+    path = ThisWorkbook.path & "\output\index.html"
+
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+
+    If Not fso.FolderExists(ThisWorkbook.path & "\output") Then
+        fso.CreateFolder (ThisWorkbook.path & "\output")
+    End If
+
+    Dim fileNo As Integer
+    fileNo = FreeFile
+
+    WriteUTF8File path, html
+
+    MsgBox "HTML出力完了：" & vbCrLf & path
+
+End Sub
+
+Function CreateFilterUI(ws As Worksheet) As String
+
+    Dim dictSite As Object: Set dictSite = CreateObject("Scripting.Dictionary")
+    Dim dictType As Object: Set dictType = CreateObject("Scripting.Dictionary")
+    Dim dictCity As Object: Set dictCity = CreateObject("Scripting.Dictionary")
+    Dim dictOwner As Object: Set dictOwner = CreateObject("Scripting.Dictionary")
+
+    Dim lastRow As Long
+    lastRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row
+
+    Dim i As Long
+
+    ' 非表示含めて収集
+    For i = 2 To lastRow
+        dictSite(ws.Cells(i, 2).Value) = 1
+        dictCity(ws.Cells(i, 3).Value) = 1
+        dictType(ws.Cells(i, 4).Value) = 1
+        dictOwner(ws.Cells(i, 5).Value) = 1
+    Next i
+
+    Dim html As String
+
+    html = ""
+
+    html = html & CreateAccordionCheckbox("site", dictSite, "拠点")
+    html = html & CreateAccordionCheckbox("type", dictType, "種類")
+    html = html & CreateAccordionCheckbox("owner", dictOwner, "担当")
+    html = html & CreateAccordionSelect("city", dictCity, "自治体")
+
+    CreateFilterUI = html
+
+End Function
+
+Function CreateAccordionCheckbox(name As String, dict As Object, title As String) As String
+
+    Dim html As String
+    Dim key
+
+    html = "<details class='accordion' open>"
+    html = html & "<summary>" & title & "</summary>"
+    html = html & "<div class='filter-group'>" & vbCrLf
+    html = html & "<label><input type='checkbox' class='filter-" & name & " lump' value='' checked>すべて</label><br>" & vbCrLf
+
+    For Each key In dict.Keys
+        html = html & "<label>"
+        html = html & "<input type='checkbox' class='filter-" & name & " individual' value='" & key & "' checked>"
+        html = html & key
+        html = html & "</label><br>" & vbCrLf
+    Next
+
+    html = html & "</div></details>" & vbCrLf
+
+    CreateAccordionCheckbox = html
+
+End Function
+
+Function CreateAccordionSelect(name As String, dict As Object, title As String) As String
+
+    Dim html As String
+    Dim key
+
+    html = "<details class='accordion' open>"
+    html = html & "<summary>" & title & "</summary>"
+    html = html & "<div class='filter-group'>" & vbCrLf
+
+    html = html & "<select id='filter-" & name & "'>"
+    html = html & "<option value=''>すべて</option>" & vbCrLf
+
+    For Each key In dict.Keys
+        html = html & "<option value='" & key & "'>" & key & "</option>" & vbCrLf
+    Next
+
+    html = html & "</select>"
+
+    html = html & "</div></details>" & vbCrLf
+
+    CreateAccordionSelect = html
+
+End Function
+
+Sub WriteUTF8File(filePath As String, content As String)
+
+    Dim stream As Object
+    Set stream = CreateObject("ADODB.Stream")
+
+    With stream
+        .Type = 2 ' テキスト
+        .Charset = "UTF-8"
+        .Open
+        .WriteText content
+        .SaveToFile filePath, 2 ' 上書き保存
+        .Close
+    End With
+
+End Sub
