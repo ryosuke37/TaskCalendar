@@ -57,6 +57,14 @@ body {
   border: 1px solid #ddd;
 }
 
+.day-header.sunday {
+  background: #d89a9a;
+}
+
+.day-header.saturday {
+  background: #a3c0e2;
+}
+
 .cell {
   min-height: 120px;
   border: 1px solid #eee;

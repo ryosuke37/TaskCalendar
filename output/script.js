@@ -97,10 +97,20 @@ function renderCalendar(tasks) {
 
   grid.innerHTML = "";
 
-  ["日", "月", "火", "水", "木", "金", "土"].forEach((d) => {
+  const weekdays = {
+    sunday: "日",
+    monday: "月",
+    tuesday: "火",
+    wednesday: "水",
+    thursday: "木",
+    friday: "金",
+    saturday: "土",
+  };
+
+  Object.keys(weekdays).forEach((d) => {
     const div = document.createElement("div");
-    div.className = "day-header";
-    div.textContent = d;
+    div.classList = "day-header " + d;
+    div.textContent = weekdays[d];
     grid.appendChild(div);
   });
 
