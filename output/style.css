@@ -112,17 +112,25 @@ input[type="checkbox"] {
   margin-right: 4px;
 }
 
-.tooltip {
-  position: absolute;
-  background: #333;
-  color: #fff;
-  padding: 8px;
-  border-radius: 5px;
+#modal {
+  background: #fff;
+  color: #222;
+  padding: 8px 16px 16px 16px;
+  border-radius: 16px;
+  border: none;
   font-size: 12px;
-  pointer-events: none;
-  z-index: 9999;
   white-space: nowrap;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+#modal-close-button {
+  display: block;
+  margin-left: auto;
+  background-color: rgb(190, 83, 56);
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  padding: 2px 5px;
 }
 
 .hidden {

@@ -19,6 +19,7 @@ let overloadedMap = {};
 
 document.addEventListener("DOMContentLoaded", () => {
   setupFilters();
+  createModal();
   renderAll();
 
   const element = document.getElementById("today");
@@ -212,8 +213,7 @@ function createTaskElement(t, dateStr) {
         <div class="owner ${isOverloaded ? "overloaded" : ""}">${t.owner}</div>
     `;
 
-  div.addEventListener("mouseenter", (e) => showTooltip(e, t));
-  div.addEventListener("mouseleave", hideTooltip);
+  div.addEventListener("click", (e) => showTaskDetails(t));
 
   return div;
 }
@@ -239,16 +239,39 @@ function getPersonalColor(person) {
   return color;
 }
 
-let tooltip;
+/* =========================
+   詳細情報モーダル
+========================= */
+function createModal() {
+  const modal = document.createElement("dialog");
+  modal.id = "modal";
+  document.body.appendChild(modal);
 
-function showTooltip(e, t) {
-  if (!tooltip) {
-    tooltip = document.createElement("div");
-    tooltip.className = "tooltip";
-    document.body.appendChild(tooltip);
-  }
+  const modalHeader = document.createElement("div");
+  modalHeader.id = "modal-header";
+  modal.appendChild(modalHeader);
 
-  tooltip.innerHTML = `
+  const closeButton = document.createElement("button");
+  closeButton.id = "modal-close-button";
+  closeButton.setAttribute(
+    "onclick",
+    `document.getElementById("modal").close()`
+  );
+  closeButton.textContent = "×";
+  modalHeader.appendChild(closeButton);
+
+  const modalBody = document.createElement("div");
+  modalBody.id = "modal-body";
+  modal.appendChild(modalBody);
+
+  const taskDetails = document.createElement("div");
+  taskDetails.className = "task-details";
+  modalBody.appendChild(taskDetails);
+}
+
+function showTaskDetails(t) {
+  const taskDetails = document.querySelector(".task-details");
+  taskDetails.innerHTML = `
         <div><b>通番：</b>${t.id}</div>
         <div><b>拠点：</b>${t.site}</div>
         <div><b>自治体：</b>${t.city}</div>
@@ -257,26 +280,9 @@ function showTooltip(e, t) {
         <div><b>期間：</b>${t.start} ～ ${t.end}</div>
     `;
 
-  tooltip.style.display = "block";
-
-  moveTooltip(e);
+  const modal = document.getElementById("modal");
+  modal.showModal();
 }
-
-function hideTooltip() {
-  if (tooltip) tooltip.style.display = "none";
-}
-
-function moveTooltip(e) {
-  tooltip.style.left = e.pageX + 10 + "px";
-  tooltip.style.top = e.pageY + 10 + "px";
-}
-
-// マウス追従
-document.addEventListener("mousemove", (e) => {
-  if (tooltip && tooltip.style.display === "block") {
-    moveTooltip(e);
-  }
-});
 
 /* =========================
    フィルター
