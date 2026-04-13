@@ -21,21 +21,28 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFilters();
   createModal();
   renderAll();
+  scrollToToday();
+});
 
-  const element = document.getElementById("today");
-
-  console.log("scroll start");
-
-  element.scrollIntoView({
-    block: "start",
-    inline: "start",
+function scrollToToday() {
+  const calendarBody = document.querySelector(".calendar-body");
+  const scrollTargetElement = document.getElementById("today");
+  const rect = scrollTargetElement.getBoundingClientRect();
+  const elementTop = rect.top + window.scrollY;
+  const calendarHeader = document.querySelector(".calendar-header");
+  const dayHeader = document.querySelector(".day-header");
+  const scrollOffset = 15;
+  const yPosition =
+    elementTop -
+    calendarHeader.offsetHeight -
+    dayHeader.offsetHeight -
+    scrollOffset;
+  calendarBody.scrollTo({
+    top: yPosition,
+    left: 0,
     behavior: "instant",
   });
-
-  setTimeout(() => {
-    console.log(window.scrollY);
-  }, 100);
-});
+}
 
 /* =========================
    全体描画
@@ -59,12 +66,14 @@ function renderHeader() {
   const m = currentDate.getMonth();
 
   cal.innerHTML = `
-        <div class="header">
+        <div class="calendar-header">
             <button onclick="prevMonth()">◀</button>
             <h2>${y}年 ${m + 1}月</h2>
             <button onclick="nextMonth()">▶</button>
         </div>
+        <div class="calendar-body">
         <div class="grid" id="grid"></div>
+        </div>
     `;
 }
 
