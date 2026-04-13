@@ -54,7 +54,7 @@ Sub ExportScheduleToHTML()
                 "id:""" & ws.Cells(i, 1).Value & """," & _
                 "site:""" & ws.Cells(i, 2).Value & """," & _
                 "city:""" & ws.Cells(i, 3).Value & """," & _
-                "type:""" & ws.Cells(i, 4).Value & """," & _
+                "workContent:""" & ws.Cells(i, 4).Value & """," & _
                 "owner:""" & ws.Cells(i, 5).Value & """," & _
                 "start:""" & Format(ws.Cells(i, 6).Value, "yyyy-mm-dd") & """," & _
                 "end:""" & Format(ws.Cells(i, 7).Value, "yyyy-mm-dd") & """" & _
@@ -94,7 +94,7 @@ End Sub
 Function CreateFilterUI(ws As Worksheet) As String
 
     Dim dictSite As Object: Set dictSite = CreateObject("Scripting.Dictionary")
-    Dim dictType As Object: Set dictType = CreateObject("Scripting.Dictionary")
+    Dim dictWorkContent As Object: Set dictWorkContent = CreateObject("Scripting.Dictionary")
     Dim dictCity As Object: Set dictCity = CreateObject("Scripting.Dictionary")
     Dim dictOwner As Object: Set dictOwner = CreateObject("Scripting.Dictionary")
 
@@ -107,7 +107,7 @@ Function CreateFilterUI(ws As Worksheet) As String
     For i = 2 To lastRow
         dictSite(ws.Cells(i, 2).Value) = 1
         dictCity(ws.Cells(i, 3).Value) = 1
-        dictType(ws.Cells(i, 4).Value) = 1
+        dictWorkContent(ws.Cells(i, 4).Value) = 1
         dictOwner(ws.Cells(i, 5).Value) = 1
     Next i
 
@@ -116,7 +116,7 @@ Function CreateFilterUI(ws As Worksheet) As String
     html = ""
 
     html = html & CreateAccordionCheckbox("site", dictSite, "拠点")
-    html = html & CreateAccordionCheckbox("type", dictType, "種類")
+    html = html & CreateAccordionCheckbox("work-content", dictWorkContent, "作業内容")
     html = html & CreateAccordionCheckbox("owner", dictOwner, "担当")
     html = html & CreateAccordionSelect("city", dictCity, "自治体")
 
@@ -186,3 +186,5 @@ Sub WriteUTF8File(filePath As String, content As String)
     End With
 
 End Sub
+
+

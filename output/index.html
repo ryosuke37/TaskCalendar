@@ -14,11 +14,11 @@
 <label><input type='checkbox' class='filter-site individual' value='関西' checked>関西</label><br>
 <label><input type='checkbox' class='filter-site individual' value='東海' checked>東海</label><br>
 </div></details>
-<details class='accordion' open><summary>種類</summary><div class='filter-group'>
-<label><input type='checkbox' class='filter-type lump' value='' checked>すべて</label><br>
-<label><input type='checkbox' class='filter-type individual' value='点検' checked>点検</label><br>
-<label><input type='checkbox' class='filter-type individual' value='工事' checked>工事</label><br>
-<label><input type='checkbox' class='filter-type individual' value='調査' checked>調査</label><br>
+<details class='accordion' open><summary>作業内容</summary><div class='filter-group'>
+<label><input type='checkbox' class='filter-work-content lump' value='' checked>すべて</label><br>
+<label><input type='checkbox' class='filter-work-content individual' value='点検' checked>点検</label><br>
+<label><input type='checkbox' class='filter-work-content individual' value='工事' checked>工事</label><br>
+<label><input type='checkbox' class='filter-work-content individual' value='調査' checked>調査</label><br>
 </div></details>
 <details class='accordion' open><summary>担当</summary><div class='filter-group'>
 <label><input type='checkbox' class='filter-owner lump' value='' checked>すべて</label><br>
@@ -53,31 +53,31 @@
 </div>
 <script>
 const tasks = [
-{id:"1",site:"首都圏",city:"新宿区",type:"点検",owner:"佐藤",start:"2026-04-01",end:"2026-04-02"},
-{id:"2",site:"首都圏",city:"渋谷区",type:"工事",owner:"鈴木",start:"2026-04-03",end:"2026-04-05"},
-{id:"3",site:"関西",city:"北区",type:"点検",owner:"田中",start:"2026-04-02",end:"2026-04-02"},
-{id:"4",site:"関西",city:"中央区",type:"調査",owner:"高橋",start:"2026-04-06",end:"2026-04-07"},
-{id:"5",site:"東海",city:"中区",type:"工事",owner:"伊藤",start:"2026-04-01",end:"2026-04-04"},
-{id:"6",site:"東海",city:"千種区",type:"点検",owner:"渡辺",start:"2026-04-08",end:"2026-04-08"},
-{id:"7",site:"首都圏",city:"博多区",type:"調査",owner:"山本",start:"2026-04-05",end:"2026-04-06"},
-{id:"8",site:"首都圏",city:"中央区",type:"工事",owner:"中村",start:"2026-04-07",end:"2026-04-10"},
-{id:"9",site:"東海",city:"中央区",type:"点検",owner:"小林",start:"2026-04-03",end:"2026-04-03"},
-{id:"10",site:"東海",city:"北区",type:"調査",owner:"加藤",start:"2026-04-09",end:"2026-04-10"},
-{id:"11",site:"首都圏",city:"新宿区",type:"工事",owner:"佐藤",start:"2026-04-11",end:"2026-04-13"},
-{id:"12",site:"関西",city:"北区",type:"点検",owner:"鈴木",start:"2026-04-12",end:"2026-04-12"},
-{id:"13",site:"東海",city:"中村区",type:"調査",owner:"",start:"2026-04-14",end:"2026-04-15"},
-{id:"14",site:"首都圏",city:"博多区",type:"点検",owner:"高橋",start:"2026-04-16",end:"2026-04-16"},
-{id:"15",site:"東海",city:"中央区",type:"工事",owner:"伊藤",start:"2026-04-17",end:"2026-04-20"},
-{id:"16",site:"首都圏",city:"渋谷区",type:"調査",owner:"渡辺",start:"2026-04-18",end:"2026-04-19"},
-{id:"17",site:"関西",city:"中央区",type:"工事",owner:"山本",start:"2026-04-21",end:"2026-04-23"},
-{id:"18",site:"東海",city:"千種区",type:"点検",owner:"中村",start:"2026-04-22",end:"2026-04-22"},
-{id:"19",site:"首都圏",city:"中央区",type:"調査",owner:"小林",start:"2026-04-24",end:"2026-04-25"},
-{id:"20",site:"東海",city:"北区",type:"工事",owner:"加藤",start:"2026-04-26",end:"2026-04-28"},
-{id:"20",site:"首都圏",city:"中央区",type:"工事",owner:"伊藤",start:"2026-04-03",end:"2026-04-05"},
-{id:"20",site:"首都圏",city:"中村区",type:"工事",owner:"高橋",start:"2026-04-03",end:"2026-04-05"},
-{id:"20",site:"首都圏",city:"博多区",type:"工事",owner:"田中",start:"2026-04-03",end:"2026-04-05"},
-{id:"20",site:"首都圏",city:"test",type:"工事",owner:"田中",start:"2026-05-03",end:"2026-04-05"},
-{id:"20",site:"首都圏",city:"test",type:"工事",owner:"鈴木",start:"2026-04-03",end:"2026-04-05"},
+{id:"1",site:"首都圏",city:"新宿区",workContent:"点検",owner:"佐藤",start:"2026-04-01",end:"2026-04-02"},
+{id:"2",site:"首都圏",city:"渋谷区",workContent:"工事",owner:"鈴木",start:"2026-04-03",end:"2026-04-05"},
+{id:"3",site:"関西",city:"北区",workContent:"点検",owner:"田中",start:"2026-04-02",end:"2026-04-02"},
+{id:"4",site:"関西",city:"中央区",workContent:"調査",owner:"高橋",start:"2026-04-06",end:"2026-04-07"},
+{id:"5",site:"東海",city:"中区",workContent:"工事",owner:"伊藤",start:"2026-04-01",end:"2026-04-04"},
+{id:"6",site:"東海",city:"千種区",workContent:"点検",owner:"渡辺",start:"2026-04-08",end:"2026-04-08"},
+{id:"7",site:"首都圏",city:"博多区",workContent:"調査",owner:"山本",start:"2026-04-05",end:"2026-04-06"},
+{id:"8",site:"首都圏",city:"中央区",workContent:"工事",owner:"中村",start:"2026-04-07",end:"2026-04-10"},
+{id:"9",site:"東海",city:"中央区",workContent:"点検",owner:"小林",start:"2026-04-03",end:"2026-04-03"},
+{id:"10",site:"東海",city:"北区",workContent:"調査",owner:"加藤",start:"2026-04-09",end:"2026-04-10"},
+{id:"11",site:"首都圏",city:"新宿区",workContent:"工事",owner:"佐藤",start:"2026-04-11",end:"2026-04-13"},
+{id:"12",site:"関西",city:"北区",workContent:"点検",owner:"鈴木",start:"2026-04-12",end:"2026-04-12"},
+{id:"13",site:"東海",city:"中村区",workContent:"調査",owner:"",start:"2026-04-14",end:"2026-04-15"},
+{id:"14",site:"首都圏",city:"博多区",workContent:"点検",owner:"高橋",start:"2026-04-16",end:"2026-04-16"},
+{id:"15",site:"東海",city:"中央区",workContent:"工事",owner:"伊藤",start:"2026-04-17",end:"2026-04-20"},
+{id:"16",site:"首都圏",city:"渋谷区",workContent:"調査",owner:"渡辺",start:"2026-04-18",end:"2026-04-19"},
+{id:"17",site:"関西",city:"中央区",workContent:"工事",owner:"山本",start:"2026-04-21",end:"2026-04-23"},
+{id:"18",site:"東海",city:"千種区",workContent:"点検",owner:"中村",start:"2026-04-22",end:"2026-04-22"},
+{id:"19",site:"首都圏",city:"中央区",workContent:"調査",owner:"小林",start:"2026-04-24",end:"2026-04-25"},
+{id:"20",site:"東海",city:"北区",workContent:"工事",owner:"加藤",start:"2026-04-26",end:"2026-04-28"},
+{id:"20",site:"首都圏",city:"中央区",workContent:"工事",owner:"伊藤",start:"2026-04-03",end:"2026-04-05"},
+{id:"20",site:"首都圏",city:"中村区",workContent:"工事",owner:"高橋",start:"2026-04-03",end:"2026-04-05"},
+{id:"20",site:"首都圏",city:"博多区",workContent:"工事",owner:"田中",start:"2026-04-03",end:"2026-04-05"},
+{id:"20",site:"首都圏",city:"test",workContent:"工事",owner:"田中",start:"2026-05-03",end:"2026-04-05"},
+{id:"20",site:"首都圏",city:"test",workContent:"工事",owner:"鈴木",start:"2026-04-03",end:"2026-04-05"},
 ];
 </script>
 <script src='script.js'></script>

@@ -186,7 +186,7 @@ function createTaskElement(t, dateStr) {
   div.className = "task";
 
   div.dataset.site = t.site;
-  div.dataset.type = t.type;
+  div.dataset.workContent = t.workContent;
   div.dataset.owner = t.owner;
   div.dataset.city = t.city;
 
@@ -208,7 +208,7 @@ function createTaskElement(t, dateStr) {
         </div>
 
         
-        <span class="type">${t.type}</span>
+        <span class="work-content">${t.workContent}</span>
         <div class="owner ${isOverloaded ? "overloaded" : ""}">${t.owner}</div>
     `;
 
@@ -252,7 +252,7 @@ function showTooltip(e, t) {
         <div><b>通番：</b>${t.id}</div>
         <div><b>拠点：</b>${t.site}</div>
         <div><b>自治体：</b>${t.city}</div>
-        <div><b>種類：</b>${t.type}</div>
+        <div><b>作業内容：</b>${t.workContent}</div>
         <div><b>担当：</b>${t.owner}</div>
         <div><b>期間：</b>${t.start} ～ ${t.end}</div>
     `;
@@ -304,7 +304,7 @@ function setupFilters() {
 
 function applyFilters() {
   const sites = getChecked("filter-site");
-  const types = getChecked("filter-type");
+  const workContents = getChecked("filter-work-content");
   const owners = getChecked("filter-owner");
   const city = document.getElementById("filter-city").value;
 
@@ -312,7 +312,8 @@ function applyFilters() {
     let visible = true;
 
     if (!sites.length || !sites.includes(t.dataset.site)) visible = false;
-    if (!types.length || !types.includes(t.dataset.type)) visible = false;
+    if (!workContents.length || !workContents.includes(t.dataset.workContent))
+      visible = false;
     if (!owners.length || !owners.includes(t.dataset.owner)) visible = false;
     if (city && t.dataset.city !== city) visible = false;
 
