@@ -38,7 +38,7 @@ Sub ExportScheduleToHTML()
     ' カレンダー本体
     html = html & "<div id='calendar'></div>" & vbCrLf
     
-    ' サイドバー終了
+    ' メイン終了
     html = html & "</div>" & vbCrLf
 
     ' データ埋め込み
