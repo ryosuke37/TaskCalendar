@@ -1,5 +1,5 @@
 /* =========================
-   状態管理
+   グローバル変数
 ========================= */
 
 let currentDate = new Date();
@@ -10,7 +10,7 @@ const SITE_COLORS = {
   関西: "#0F9D58",
 };
 
-const cityColorMap = {};
+const personalColorMap = {};
 
 let overloadedMap = {};
 /* =========================
@@ -190,8 +190,8 @@ function createTaskElement(t, dateStr) {
   div.dataset.owner = t.owner;
   div.dataset.city = t.city;
 
-  // 背景色（自治体）
-  const bgColor = getCityColor(t.city);
+  // 背景色（担当者）
+  const bgColor = getPersonalColor(t.owner);
   div.style.backgroundColor = bgColor;
   div.style.color = "#222";
 
@@ -222,19 +222,19 @@ function getSiteColor(site) {
   return SITE_COLORS[site] || "#999";
 }
 
-function getCityColor(city) {
-  if (cityColorMap[city]) return cityColorMap[city];
+function getPersonalColor(person) {
+  if (personalColorMap[person]) return personalColorMap[person];
 
   let hash = 0;
-  for (let i = 0; i < city.length; i++) {
-    hash = city.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < person.length; i++) {
+    hash = person.charCodeAt(i) + ((hash << 5) - hash);
   }
 
   const hue = Math.abs(hash) % 360;
 
   const color = `hsl(${hue}, 45%, 80%)`;
 
-  cityColorMap[city] = color;
+  personalColorMap[person] = color;
 
   return color;
 }
